@@ -19,7 +19,6 @@
 package org.exoplatform.common.regex;
 
 import java.io.IOException;
-import java.io.Reader;
 
 /**
  * @author <a href="hoang281283@gmail.com">Minh Hoang TO</a>
