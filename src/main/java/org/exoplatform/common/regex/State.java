@@ -26,19 +26,19 @@ import java.util.List;
  * @author <a href="hoang281283@gmail.com">Minh Hoang TO</a>
  * @date 7/5/11
  */
-public class State
+public class State<C>
 {
 
    private final String label;
 
-   private final List<Transition> transitions;
+   private final List<Transition<C>> transitions;
 
    private final boolean isFinal;
 
    private State(String label, boolean isFinal)
    {
       this.label = label;
-      this.transitions = new LinkedList<Transition>();
+      this.transitions = new LinkedList<Transition<C>>();
       this.isFinal = isFinal;
    }
 
@@ -47,7 +47,7 @@ public class State
       return new State(label, isFinal);
    }
 
-   public void connectTo(char letter, State target)
+   public void connectTo(C letter, State target)
    {
       Transition newTransition = new Transition(letter, this, target);
 
@@ -61,11 +61,11 @@ public class State
       this.transitions.add(newTransition);
    }
 
-   public State findTargetState(char letter)
+   public State<C> findTargetState(C letter)
    {
       for(Transition tran : transitions)
       {
-         if(tran.getLetter() == letter)
+         if(tran.getLetter().equals(letter))
          {
             return tran.getTo();
          }

@@ -1,4 +1,4 @@
-package org.exoplatform.common.regex;/*
+/*
  * Copyright (C) 2011 eXo Platform SAS.
  *
  * This is free software; you can redistribute it and/or modify it
@@ -16,54 +16,19 @@ package org.exoplatform.common.regex;/*
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+package org.exoplatform.common.regex;
+
+import java.io.IOException;
+import java.io.Reader;
 
 /**
- * Transition of a Finite State Machine
- *
  * @author <a href="hoang281283@gmail.com">Minh Hoang TO</a>
- * @date 7/5/11
+ * @date 7/6/11
  */
-public class Transition<C>
+public abstract class InputTape<C>
 {
 
-   private final C letter;
+   abstract public boolean hasNext() throws IOException;
 
-   private final State<C> from;
-
-   private final State<C> to;
-
-   public Transition(C letter, State<C> from, State<C> to)
-   {
-      this.letter = letter;
-      this.from = from;
-      this.to = to;
-   }
-
-   public C getLetter()
-   {
-      return this.letter;
-   }
-
-   public State<C> getTo()
-   {
-      return this.to;
-   }
-
-   public State<C> getFrom()
-   {
-      return this.from;
-   }
-
-   @Override
-   public boolean equals(Object obj)
-   {
-      if(!(obj instanceof Transition))
-      {
-         return obj == null && this == null;
-      }
-
-      Transition transition = (Transition) obj;
-      return transition.letter.equals(this.letter) && transition.from == this.from && transition.to == this.to;
-   }
-
+   abstract public C next() throws IOException;
 }
