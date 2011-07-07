@@ -17,7 +17,12 @@ package org.exoplatform.common.regex;/*
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
+import org.exoplatform.common.regex.annotation.MachineConfiguration;
+import org.exoplatform.common.regex.event.MachineEventListener;
+import org.exoplatform.common.regex.util.ConfigurationUtil;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -33,13 +38,19 @@ public abstract class FiniteStateMachine<C, A>
 
    private final Stack<A> stackMemory;
 
+   private Map<String, MachineEventListener<C, A>> listenerMap;
+
    private C commingInput;
+
+   private volatile boolean fireEvent;
 
    public FiniteStateMachine(State<C> startState)
    {
       this.startState = startState;
-      stackMemory = new Stack<A>();
+      this.stackMemory = new Stack<A>();
       this.currentState = startState;
+      this.listenerMap = new HashMap<String, MachineEventListener<C, A>>();
+      processConfig();
    }
 
    abstract protected void makeTransition();
@@ -96,5 +107,14 @@ public abstract class FiniteStateMachine<C, A>
    public void setCurrentState(State<C> nextState)
    {
       this.currentState = nextState;
+   }
+
+   private void processConfig()
+   {
+      MachineConfiguration config = this.getClass().getAnnotation(MachineConfiguration.class);
+      if(config != null)
+      {
+         this.listenerMap = (Map<String, MachineEventListener<C, A>>)ConfigurationUtil.getListeners(config);
+      }
    }
 }
